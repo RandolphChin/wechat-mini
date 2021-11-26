@@ -88,7 +88,7 @@
         "usingComponents" : true,
         "permission" : {
             "scope.userLocation" : {
-                "desc" : "蓝牙搜索需要定位功能"
+                "desc" : "获取wifi需要打开GPS"
             }
         }
     },

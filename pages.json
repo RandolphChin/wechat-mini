@@ -8,6 +8,16 @@
 
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
+			"path" : "pages/device/device",
+			"name":"device",
+			"style" :                                                                                    
+			{
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+			
+		},
+		{
 			"path":"pages/test/demo",
 			"name":"demo",
 			"style": {
@@ -70,6 +80,16 @@
             }
             
         }
+        ,{
+            "path" : "pages/wifi/wifi",
+			"name":"wifi",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
@@ -96,10 +116,10 @@
 				}, 
 				 */
 				{
-					"pagePath":"pages/test/demo",
-					"iconPath": "static/image/bluetooth_nor.png",
-					"selectedIconPath": "static/image/bluetooth_pressed.png",
-					"text":"蓝牙"
+					"pagePath":"pages/device/device",
+					"iconPath": "static/image/devices_nor.png",
+					"selectedIconPath": "static/image/devices_pressed.png",
+					"text":"设备"
 				},
 				{
 					"pagePath":"pages/me/userInfo/userInfo",
