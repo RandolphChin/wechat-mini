@@ -76,8 +76,9 @@
 						//存储用户信息
 						this.$u.vuex('token', res.token)
 						this.$u.vuex('userInfo', res.user.user)
-						uni.setStorageSync('userInfo', res.user.user);
-						uni.setStorageSync('token', res.token);
+						console.log('login resp= '+ res);
+						//uni.setStorageSync('userInfo', res.user);
+						//uni.setStorageSync('token', res.token);
 						
 						uni.switchTab({
 							url: that.navUrl
@@ -102,6 +103,7 @@
 			uni.login({
 				success: function(res) {
 					if (res.code) {
+						console.log(res.code);
 						that.code = res.code
 					}
 				}

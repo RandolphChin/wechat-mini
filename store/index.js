@@ -18,10 +18,22 @@ const saveLifeData = function(key, value) {
 		uni.setStorageSync('lifeData', tmp);
 	}
 }
+// 从缓存中取得相同的key进行覆盖操作
+let lifeData = uni.getStorageSync('lifeData') || {};
 
 const store = new Vuex.Store({
 	state: {
-		token: ''
+		/**
+		 * 如果上面从本地获取的lifeData对象下有对应的属性，就赋值给state中对应的变量
+		 *  
+		 * 	取值方法  this.$store.state.token  或者 Vue.prototype.$store.state.token
+			设置方法  this.$u.vuex('user.name', '史诗')
+		 */
+		token: lifeData.token ? lifeData.token : '',
+		userInfo: lifeData.userInfo ? lifeData.userInfo : '',
+		navUrl: lifeData.navUrl ? lifeData.lifeData : ''
+		// 如果token无需保存到本地永久存储，无需lifeData.token方式
+		// token: ''
 	},
 	getters: {
 
@@ -56,8 +68,7 @@ const store = new Vuex.Store({
 	},
 })
 
-// 从缓存中取得相同的key进行覆盖操作
-let lifeData = uni.getStorageSync('lifeData') || {};
+
 for (let key in lifeData) {
 	if (store.state.hasOwnProperty(key)) {
 		store.commit('$uStore', {

@@ -51,10 +51,11 @@ const install = (Vue, vm) => {
 				return res.data;
 		}else{
 			if(res.statusCode == 401){
-				uni.removeStorageSync('navUrl')
-				uni.removeStorageSync('userInfo')
-				uni.removeStorageSync('token')
+				// uni.removeStorageSync('navUrl')
+				// uni.removeStorageSync('userInfo')
+				// uni.removeStorageSync('token')
 				Vue.prototype.$u.vuex('token', '')
+				Vue.prototype.$u.vuex('userInfo', '')
 				uni.redirectTo({
 					url: '/pages/login/login',
 				})

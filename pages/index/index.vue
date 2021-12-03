@@ -77,7 +77,7 @@ export default {
 	},
 	mounted() {
 		// vuex 测试案例
-		console.log('token:', this.token);
+		console.log('token:', this.$store.state.token);
 	},
 	methods: {
 		toast() {

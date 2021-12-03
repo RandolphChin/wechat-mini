@@ -1,45 +1,25 @@
 <template>
 	<view>
-		<view v-for="(item, index) in devices" :key="item.deviceId">
-			<u-card :head-border-bottom="false" :show-head="false" @body-click="connectDevice(item.connectable,item.deviceId,item.name,item.RSSI)">
-				<view slot="body">
-					<view class="u-flex u-row-between">
-						<view class="u-line-2">
-							<view class="u-font-xl">{{ item.name}}</view>
-							<view class="u-flex u-row-between u-m-t-20">
-								<view class="dev-signal">{{ item.RSSI }}</view>
-								<view class="u-m-l-25">{{ item.deviceId}}</view>
-							</view>
-						</view>
-						<view class="u-flex u-row-between">
-							<view v-if="item.connectable" class="u-font-lg dev-signal">On Service</view>
-							<view v-else class="u-font-lg">No services</view>
-							<view class="u-m-l-20">></view>
-						</view>
+		<u-swipe-action  :index="index" 
+					v-for="(item, index) in devices" :key="item.deviceId" 
+					@click="click" @open="open">
+					
+			<view class="u-flex u-row-between">
+				<view class="u-line-2">
+					<view class="u-font-xl" v-if="item.name">{{ item.name}}</view>
+					<view class="u-font-xl" v-else>左滑修改设备名称</view>
+					<view class="u-flex u-row-between u-m-t-20">
+						<view class="dev-signal">{{ item.RSSI }}</view>
+						<view class="u-m-l-25">{{ item.deviceId}}</view>
 					</view>
-				
 				</view>
-			</u-card>
-		</view>
-		<u-card :head-border-bottom="false" :show-head="false" @body-click="connectDevice(false,'58:80:3C:36:95:33','未知设备',-33)">
-			<view slot="body">
 				<view class="u-flex u-row-between">
-					<view class="u-line-2">
-						<view class="u-font-xl">未知设备</view>
-						<view class="u-flex u-row-between u-m-t-20">
-							<view class="dev-signal">信号:-33</view>
-							<view class="u-m-l-25">58:80:3C:36:95:33</view>
-						</view>
-					</view>
-					<view class="u-flex u-row-between">
-						<view class="u-font-lg"><u-icon name="wifi" color="#2979ff" size="38"></u-icon></view>
-						<view class="u-m-l-20"><u-icon name="wifi-off" size="38"></u-icon>
-</view>
-					</view>
+					<view v-if="item.connectable" class="u-font-lg dev-signal">On Service</view>
+					<view v-else class="u-font-lg">No services</view>
+					<view class="u-m-l-20">></view>
 				</view>
-			
 			</view>
-		</u-card>
+		</u-swipe-action>
 	</view>
 </template>
 

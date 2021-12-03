@@ -1,6 +1,7 @@
 // common/http.api.js
 
 import * as user from './user.js';
+import * as device from './device.js';
 
 // api 接口管理
 const install = (Vue, vm) => {
@@ -10,7 +11,8 @@ const install = (Vue, vm) => {
 		getSearch: (params = {}) => vm.$u.get('/http/search', params),
 		
 		// modules import
-		user
+		user,
+		device
 	};
 }
 
