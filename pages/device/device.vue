@@ -4,9 +4,14 @@
 			<u-button plain type="info" @click="preAdd()">添加设备</u-button>	
 		</view>
 		<view>
-			<cl-device :devices="devices"></cl-device>
+			<cl-device :devices="devices" @delDev="delDev"></cl-device>
 		</view>
 		<u-loadmore :status="status" />
+		<u-popup v-model="popShow" mode="center">
+				<view>
+					<u-input v-model="custDeviceName" :type="type" placeholder="请输入设备名称"/>
+				</view>
+			</u-popup>
 	</view>
 </template>
 
@@ -17,7 +22,10 @@
 				devices: [],
 				status: 'loadmore', // 加载前值为loadmore，加载中为loading，没有数据为nomore
 				page: 0,
-				size: 10
+				size: 10,
+				popShow: false,
+				custDeviceName:'',
+				type: 'text'
 			}
 		},
 		onLoad() {
@@ -51,6 +59,16 @@
 						deviceId: 'deviceId'
 					}
 				});
+			},
+			delDev(index){
+				console.log('p invoke');
+				let ids = [];
+				ids.push(parseInt(this.devices[index].id));
+				this.$api.device.deleteDevice(
+					ids
+				).then(res => {
+					this.devices.splice(index, 1);
+				})
 			}
 		}
 	}
