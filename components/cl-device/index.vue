@@ -2,7 +2,7 @@
 	<view>
 		<u-swipe-action  :index="index" 
 					v-for="(item, index) in devices" :key="item.deviceId" :options="options"
-					@click="click" >
+					@click="click"  @open="open">
 			<u-line color="#f5f5f5" />
 			<view class="u-flex u-row-between u-m-25 ">
 				<view class="u-line-2">
@@ -30,7 +30,7 @@
 			return {
 				options: [
 					{
-						text: '配置',
+						text: '操作',
 						style: {
 							backgroundColor: '#00aa00'
 						}
@@ -47,7 +47,8 @@
 							backgroundColor: '#dd524d'
 						}
 					}
-				]
+				],
+				show: false
 			}
 		},
 		props: {
@@ -63,18 +64,32 @@
 				this.$emit("connectDev",connectable,deviceId,deviceName,rssi);
 			},
 			click(index, index1) {
-							console.log(index);
-							console.log(index1);
 				if(index1 == 0) {
 					console.log('setting');
-			
+					this.$emit('naviOperate',index);
 				}else if(index1 == 1) {
 					console.log('update');
+					this.$emit('devUpdate',index);
 				}else {
 					console.log('del');
 					this.$emit("delDev",index);
 				}			
 			},
+			// 如果打开一个的时候，不需要关闭其他，则无需实现本方法
+			open(index) {
+				// 先将正在被操作的swipeAction标记为打开状态，否则由于props的特性限制，
+				// 原本为'false'，再次设置为'false'会无效
+				console.log(this.devices);
+				this.devices[index].show = true;
+
+				this.devices.map((val, idx) => {
+					if(index != idx) {
+					this.devices[idx].show = false;
+					}
+				})
+				console.log(this.devices);
+				// this.$emit('open',index);
+			}
 		}
 	}
 </script>

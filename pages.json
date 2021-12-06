@@ -39,12 +39,12 @@
 		{
 			"path": "pages/newpage/newpage",
 			"name": "newpage",
-			"aliasPath": "/newpage/:deviceId/:name/:rssi",
+			"aliasPath": "/newpage/:device",
 			"meta": {
-				"title": "蓝牙"
+				"title": "设备操作"
 			},
 			"style": {
-				"navigationBarTitleText": "海葵星蓝牙",
+				"navigationBarTitleText": "操作",
 				"enablePullDownRefresh": false
 			}
 		}, 
