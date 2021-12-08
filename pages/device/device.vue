@@ -4,7 +4,7 @@
 			<u-button plain type="info" @click="preAdd()">添加设备</u-button>	
 		</view>
 		<view>
-			<cl-device :devices="devices" @delDev="delDev" @devUpdate="devUpdate" @naviOperate="naviOperate" @open="open"></cl-device>
+			<cl-device :devices="devices" @delDev="delDev" @devUpdate="devUpdate" @naviOperate="naviOperate" @openDev="openDev" @contentClick="contentClick"></cl-device>
 		</view>
 		<u-loadmore :status="status" />
 		<u-popup v-model="popShow" mode="center" border-radius="20">
@@ -23,6 +23,7 @@
 					</view>
 				</view>
 			</u-popup>
+
 	</view>
 </template>
 
@@ -74,13 +75,21 @@
 				});
 			},
 			delDev(index){
-				let ids = [];
-				ids.push(parseInt(this.devices[index].id));
-				this.$api.device.deleteDevice(
-					ids
-				).then(res => {
-					this.devices.splice(index, 1);
-				})
+				uni.showModal({
+				  title: '提示',
+				  content: '您确定删除吗？',
+				  success: (res)=> {
+					if (res.confirm) {
+					 let ids = [];
+					 ids.push(parseInt(this.devices[index].id));
+					 this.$api.device.deleteDevice(
+						ids
+					 ).then(res => {
+						this.devices.splice(index, 1);
+					 })
+					}
+				  }
+				});
 			},
 			devUpdate(index){
 				this.popShow = true;
@@ -100,17 +109,17 @@
 				).then(res => {
 					this.loaded = false;
 					this.popShow = false;
+					this.devices[this.chosedIndex].show = true;
+					this.devices[this.chosedIndex].show = false;
 					uni.showToast({
-									icon: "none",
-									title: '修改成功',
-									mask: true,
-									duration: 2000
-								});
+						icon: "none",
+						title: '修改成功',
+						mask: true,
+						duration: 2000
+					});
 				})
 			},
 			naviOperate(index){
-				console.log(this.devices[index]);
-				console.log('navagate');
 				this.$Router.push({
 					name: 'newpage',
 					params: {
@@ -118,16 +127,23 @@
 					}
 				});
 			},
-			open(index) {
-				/* this.devices[index].show = true;
+
+			// 如果打开一个的时候，不需要关闭其他，则无需实现本方法
+			openDev(index) {
+				// 先将正在被操作的swipeAction标记为打开状态，否则由于props的特性限制，
+				// 原本为'false'，再次设置为'false'会无效
+				this.devices[index].show = true;
 				this.devices.map((val, idx) => {
-					this.devices[idx].show = true;
+					if(index != idx) this.devices[idx].show = false;
 				})
-				this.devices.map((val, idx) => {
-					if(index != idx) {
-					this.devices[idx].show = false;
+			},
+			contentClick(index){
+				this.$Router.push({
+					name: 'newpage',
+					params: {
+						device: this.devices[index]
 					}
-				}) */
+				});
 			}
 		}
 	}

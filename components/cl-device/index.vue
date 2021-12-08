@@ -1,8 +1,8 @@
 <template>
 	<view>
-		<u-swipe-action  :index="index" 
-					v-for="(item, index) in devices" :key="item.deviceId" :options="options"
-					@click="click"  @open="open">
+		<u-swipe-action  :index="index"  :show="item.show"  @content-click="contentClick"
+					v-for="(item, index) in devices" :key="item.deviceId" @open="open" :options="options"
+					@click="click" >
 			<u-line color="#f5f5f5" />
 			<view class="u-flex u-row-between u-m-25 ">
 				<view class="u-line-2">
@@ -60,9 +60,6 @@
 			}
 		},
 		methods: {
-			connectDevice(connectable,deviceId,deviceName,rssi) {
-				this.$emit("connectDev",connectable,deviceId,deviceName,rssi);
-			},
 			click(index, index1) {
 				if(index1 == 0) {
 					console.log('setting');
@@ -77,18 +74,10 @@
 			},
 			// 如果打开一个的时候，不需要关闭其他，则无需实现本方法
 			open(index) {
-				// 先将正在被操作的swipeAction标记为打开状态，否则由于props的特性限制，
-				// 原本为'false'，再次设置为'false'会无效
-				console.log(this.devices);
-				this.devices[index].show = true;
-
-				this.devices.map((val, idx) => {
-					if(index != idx) {
-					this.devices[idx].show = false;
-					}
-				})
-				console.log(this.devices);
-				// this.$emit('open',index);
+				this.$emit("openDev",index);
+			},
+			contentClick(index){
+				this.$emit("contentClick",index);
 			}
 		}
 	}

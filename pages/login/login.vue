@@ -75,7 +75,7 @@
 						this.$u.toast('获取数据成功');
 						//存储用户信息
 						this.$u.vuex('token', res.token)
-						this.$u.vuex('userInfo', res.user.user)
+						this.$u.vuex('userInfo', res.user)
 						console.log('login resp= '+ res);
 						//uni.setStorageSync('userInfo', res.user);
 						//uni.setStorageSync('token', res.token);

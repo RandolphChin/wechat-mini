@@ -1,39 +1,34 @@
 <template>
 	<view>
-		<u-collapse :head-style="headStyle" ref="collapse">
-				<u-collapse-item :title="item.serviceId" v-for="(item, index) in characteristics" :key="item.serviceId">
-					<u-card :head-border-bottom="false" :show-head="false" v-for="(sonItem, sonIndex) in item.characteristics" :key="sonItem.uuid" @body-click="nextDetail(item.serviceId,sonItem)">
-						<view slot="body">
-							<view class="u-flex u-row-between">
-									<view class="u-font-xs">{{ sonItem.uuid }}</view>
-									<view class="u-flex u-row-between">
-										<view class="u-m-r-10 u-font-lg crud-style" v-if="sonItem.read ==true">R</view>
-										<view class="u-m-r-10 u-font-lg crud-style" v-if="sonItem.write ==true">W</view>
-										<view class="u-m-r-10 u-font-lg crud-style" v-if="sonItem.notify ==true">N</view>
-										<view class="u-font-lg crud-style" v-if="sonItem.indicate == true">I</view>
-									</view>
-							</view>
-						
+		<u-swipe-action  :index="index"  :show="item.show"
+					v-for="(item, index) in quartzs" :key="item.cronExpressionOpen" @open="open" :options="options"
+					@click="click" >
+			<u-line color="#f5f5f5" />
+			<view class="u-flex u-row-around u-m-25 ">
+				<view class="u-flex u-row-around">
+					<view class="u-flex u-row-between">
+						<view class="u-font-xl deviceName">{{ item.cronExpressionOpen}}</view>
+						<view class="u-font-xs u-m-l-10">开</view>
+					</view>
+					<view class="u-flex u-row-between u-m-l-35">
+						<view class="u-font-xl deviceName">{{ item.cronExpressionClose}}</view>
+						<view class="u-font-xs u-m-l-10">关</view>
+					</view>
+				</view>
+				
+				<view class="u-flex u-row-between u-m-r-45">
+						<view v-if="item.status == 1" class="u-flex u-row-between">
+							<view><u-icon name="play-circle" color="#2979ff" size="38"></u-icon></view>
+							<view>运行中</view>
 						</view>
-					</u-card>
-				</u-collapse-item>
-				<!-- <u-collapse-item title="item.serviceId" key="item.serviceId">
-					<u-card :head-border-bottom="false" :show-head="false" key="sonItem.uuid" @body-click="nextDetail('88:34:46:52:34:45:334',example)">
-						<view slot="body">
-							<view class="u-flex u-row-between">
-									<view class="u-font-xs">88:34:46:52:34:45:334</view>
-									<view class="u-flex u-row-between">
-										<view class="u-m-r-10 u-font-lg crud-style" >R</view>
-										<view class="u-m-r-10 u-font-lg crud-style" >W</view>
-										<view class="u-m-r-10 u-font-lg crud-style" >N</view>
-										<view class="u-font-lg crud-style" >I</view>
-									</view>
-							</view>
-						
+						<view v-else >
+							<view><u-icon name="pause-circle" size="38"></u-icon></view>
+							<view>已暂停</view>
 						</view>
-					</u-card>
-				</u-collapse-item> -->
-			</u-collapse>
+				</view>
+			</view>
+			<u-line color="#f5f5f5" />
+		</u-swipe-action>
 	</view>
 </template>
 
@@ -41,22 +36,19 @@
 	export default {
 		data() {
 			return {
-				headStyle: {
-					fontSize: '30rpx',
-					marginLeft: '35rpx',
-					fontWeight: 'bold'
-				},
-				example: {
-					"uuid":"88:34:46:52:34:45:334",
-					"read":true,
-					"write":true,
-					"notify":true,
-					"indicate":true
-				},
+				options: [
+					{
+						text: '删除',
+						style: {
+							backgroundColor: '#dd524d'
+						}
+					}
+				],
+				show: false
 			}
 		},
 		props: {
-			characteristics: {
+			quartzs: {
 				type: Array,
 				default: () => {
 					return [];
@@ -64,26 +56,24 @@
 			}
 		},
 		methods: {
-			nextDetail(serviceId,sonItem){
-				console.log(serviceId + '********' + sonItem.uuid);
-				this.$Router.push({
-					name: 'richPage',
-					params: {
-						serviceId: serviceId,
-						sonItem: sonItem
-					}
-				});
+			click(index, index1) {
+				if(index1 == 0) {
+					this.$emit('delOperate',index);
+				}		
+			},
+			// 如果打开一个的时候，不需要关闭其他，则无需实现本方法
+			open(index) {
+				this.$emit("openQuartz",index);
 			}
 		}
 	}
 </script>
 
 <style scoped lang="scss">	
-.header-style {
-	font-weight: bold;
-	text-align: center;
-}
-.crud-style {
+.dev-signal {
 	color: #55aa00;
+}
+.deviceName {
+	font-weight: bold;
 }
 </style>
