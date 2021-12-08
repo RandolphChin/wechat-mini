@@ -1,23 +1,20 @@
 <template>
-	<view class="container">
-		<view class="intro">
-			<image src="/static/logo.png"></image>
-			<view class="tips">
-				花开花落年年有
-				<br>
-				人世难得几回春
-			</view>
+	<view class="v1">
+		<view class="avatarUrl">
+			<image v-if="userInfo" :src="userInfo.user.avatar" mode="widthFix"></image>
+			<open-data v-else type="userAvatarUrl"></open-data>
 		</view>
-		
-		<view class="bottom">
-			<!-- #ifdef H5 -->
-				<button type="primary" size="default" class="login-btn" @tap="h5Login">
-					登录
-				</button>
-			<!-- #endif -->
-			<!-- #ifdef MP-WEIXIN -->
-			<button type="primary"  @tap="getUserProfile"> 微信登录 </button>
-			<!-- #endif -->
+	
+		<view class="content">
+			<view class="v2"></view>
+	
+			<view v-if="isShowUserInfo" class="v3">申请获得以下权限</view>
+			<view v-if="isShowUserInfo" class="v4">获取你的公开信息（昵称、头像等）</view>
+	
+			<button v-if="isShowUserInfo" @click="getUserProfile" class="u-reset-button u-flex u-row-center btn1" type="default">
+				<u-icon size="40" name="weixin-fill"></u-icon>
+				<text class="u-margin-left-10">微信登录</text>
+			</button>
 		</view>
 	</view>
 </template>
@@ -29,7 +26,8 @@
 			return {
 				navUrl: '',
 				code: '',
-				redirect: undefined
+				redirect: undefined,
+				isShowUserInfo: this.$store.state.userInfo ? false : true,
 			}
 		},
 		methods: {
@@ -113,47 +111,58 @@
 </script>
 
 <style lang="scss" scoped>
-	.intro {
+	.v1 {
 		width: 100%;
-		height: 60vh;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: space-evenly;
+		height: 100%;
+		overflow: hidden;
+		background: #ffffff;
+		padding-top: 100rpx;
+	}
+
+	.avatarUrl {
+		width: 200rpx;
+		margin: 0 auto;
+		height: 200rpx;
+		border-radius: 50%;
+		overflow: hidden;
+		border: 4rpx solid #fff;
+		box-shadow: 0rpx 0rpx 10rpx $u-light-color;
 		
 		image {
-			width: 165rpx;
-			height: 165rpx;
-		}
-		
-		.tips {
-			line-height: 72rpx;
-			text-align: center;
+			width: 200rpx;
 		}
 	}
-	
-	.bottom {
-		height: 40vh;
-		display: flex;
-		flex-direction: column;
-		justify-content: space-between;
-		align-items: center;
-		padding: 0 40rpx;
-		
-		.login-btn {
-			width: 100%;
-			border-radius: 50rem !important;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			padding: 10rpx 0;
-			
-			image {
-				width: 36rpx;
-				height: 30rpx;
-				margin-right: 10rpx;
-			}
-		}
-		
+
+	.content {
+		width: 84%;
+		margin: 0 auto;
+	}
+
+	.v2 {
+		width: 100%;
+		margin-top: 70rpx;
+		height: 2rpx;
+		background: $u-border-color;
+	}
+
+	.v3 {
+		margin-top: 50rpx;
+		font-weight: 600;
+		font-size: 34rpx;
+		color: $u-main-color;
+	}
+
+	.v4 {
+		margin: 30rpx 0 80rpx 0;
+		font-size: 28rpx;
+		color: $u-tips-color;
+	}
+
+	.btn1 {
+		margin-bottom: 24rpx;
+		background: #808003;
+		color: #fff;
+		height: 90rpx;
+		border-radius: 90rpx;
 	}
 </style>

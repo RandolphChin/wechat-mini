@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view class="u-flex u-row-right u-p-r-10">
-			<u-button plain type="info" @click="preAdd()">添加设备</u-button>	
+			<u-button plain type="info" @click="preAdd()" size="mini">添加设备</u-button>	
 		</view>
 		<view>
 			<cl-device :devices="devices" @delDev="delDev" @devUpdate="devUpdate" @naviOperate="naviOperate" @openDev="openDev" @contentClick="contentClick"></cl-device>
