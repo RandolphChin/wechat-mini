@@ -20,3 +20,7 @@ export function getDeviceAddCode(params){
 export function checkDeviceCreate(params){
 	return vm.$u.get('/wechat/api/device/checkDeviceCreate', params)
 }
+
+export function sendDeviceOrder(params){
+	return vm.$u.post('/wechat/api/device/operateDevice', params)
+}

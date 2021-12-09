@@ -11,10 +11,10 @@
 			<view class="u-font-xl header-style"><text>设备操作</text></view>
 			<view class="u-flex u-row-around u-m-t-10">
 				<view>
-					<u-button type="success" size="medium">开机</u-button>
+					<u-button type="success" size="medium" :loading="openLoading" @click="sendDeviceOrder(1)">开机</u-button>
 				</view>
 				<view>
-					<u-button type="error" size="medium">关机</u-button>
+					<u-button type="error" size="medium" :loading="closeLoading" @click="sendDeviceOrder(0)">关机</u-button>
 				</view>
 						
 			</view>
@@ -69,7 +69,9 @@ export default {
 			titleOpen:'点击设置开机时间',
 			titleClose:'点击设置关机时间',
 			addTab: false,
-			quartzs:[]
+			quartzs:[],
+			openLoading:false,
+			closeLoading:false
 			
 		}
 	},
@@ -199,6 +201,24 @@ export default {
 			          }
 			        });
 			
+		},
+		sendDeviceOrder(order){
+			let orderInfo={};
+			orderInfo.device_id=this.device.deviceId;
+			orderInfo.device_order=order;
+			console.log(orderInfo);
+			this.openLoading = true;
+			this.$api.device.sendDeviceOrder(
+				orderInfo
+			).then(res => {
+				this.openLoading = false;
+				uni.showToast({
+					icon: "none",
+					title: '发送成功',
+					mask: true,
+					duration: 2000
+				});
+			})
 		}
 	}
 }

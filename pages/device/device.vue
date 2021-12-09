@@ -153,6 +153,7 @@ import passJs from '@/common/pass.js';
 				})
 			},
 			contentClick(index){
+				console.log(this.devices[index]);
 				this.$Router.push({
 					name: 'newpage',
 					params: {
