@@ -12,3 +12,11 @@ export function deleteDevice(params){
 export function updateDeviceName(params){
 	return vm.$u.put('/wechat/api/device', params)
 }
+
+export function getDeviceAddCode(params){
+	return vm.$u.get('/wechat/api/device/deviceAddCode', params)
+}
+
+export function checkDeviceCreate(params){
+	return vm.$u.get('/wechat/api/device/checkDeviceCreate', params)
+}

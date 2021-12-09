@@ -28,6 +28,7 @@
 </template>
 
 <script>
+import passJs from '@/common/pass.js';		
 	export default {
 		data() {
 			return {
@@ -46,14 +47,31 @@
 			this.getDevice();
 		},
 		onReachBottom() {
-			this.getDevice()
+			//上拉动作
+			this.getDevice();
+		},
+		// 下拉动作
+		onPullDownRefresh (){
+			console.log('invoke onPullDownRefresh ');
+			this.refresh();
+		},
+		onUnload() {
+			console.log('device unload');
+		},
+		mounted() {
+			var that = this;
+			passJs.$on('reGetDevice',function(msg){
+				console.log(msg);
+				that.refresh();
+			})
 		},
 		methods: {
 			getDevice(){
 				let that = this;
 				this.$api.device.getDeviceList({
 					page: that.page,
-					size: that.size
+					size: that.size,
+					sort: 'createTime,desc'
 				}).then(res => {
 					// 此处不需要校验code为200 请求拦截器中已判断
 					that.$u.toast('获取数据成功');
@@ -68,10 +86,7 @@
 			},
 			preAdd() {
 				this.$Router.push({
-					name: 'wifi',
-					params: {
-						deviceId: 'deviceId'
-					}
+					name: 'wifi'
 				});
 			},
 			delDev(index){
@@ -144,6 +159,12 @@
 						device: this.devices[index]
 					}
 				});
+			},
+			refresh(){
+				this.page = 0;
+				this.size = 10;
+				this.devices=[];
+				this.getDevice();
 			}
 		}
 	}

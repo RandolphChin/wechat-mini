@@ -1,18 +1,27 @@
 <template>
 	<view>
+		<view class="u-m-l-25">
+			<view>流程</view>
+			<view class="u-m-t-10">1）打开GPS定位。</view>
+			<view>2）连接到家庭路由器2.4G频段网络，打开小程序。</view>
+			<view>3）切换 Wifi加入设备 Wifi 热点。</view>
+			<view>4）输入热点 Wifi密码,点击确定。</view>
+		</view>
 		<view class="u-p-20">
 			<u-form :model="form" ref="uForm" :error-type="errorType" >
-					<u-form-item label="WIFI" ><u-input  v-model="data.ssid" placeholder="点击这里选择 wifi" /></u-form-item>
+					<u-form-item label="WIFI" ><u-input  v-model="data.ssid" placeholder="请填写 wifi 名称" /></u-form-item>
 					<u-form-item label="密码" ><u-input placeholder="请填写 wifi 密码" v-model="data.password" /></u-form-item>
-					<u-button type="success"  @click="transInfo()">提交</u-button>
+					<u-button type="success"  @click="transInfo()">连接</u-button>
 			</u-form>
+			<cl-loading :lotusLoadingData="lotusLoadingData"></cl-loading>
 		</view>
-
+			<u-toast ref="uToast" />
 		
 	</view>
 </template>
 
 <script>
+import passJs from '@/common/pass.js';	
 	export default {
 		data() {
 			return {
@@ -27,7 +36,6 @@
 					]
 				},
 				list: [],
-				show: false,
 				wifiIsInit: false,
 				data: {
 				        ssid: '',
@@ -37,10 +45,20 @@
 				        showClearBtn: false,
 				        isFirst: true,
 				    },
+				addCode:'',
+				lotusLoadingData: {
+					isShow: false,
+					text: '创建中...'
+				},
+				timeoutId:null
 			}
 		},
 		onLoad() {
 			this.initWifi();
+			this.addDeviceCode();
+		},
+		onUnload() {
+			clearInterval(this.timeoutId);
 		},
 		// 必须要在onReady生命周期，因为onLoad生命周期组件可能尚未创建完毕
 		onReady() {
@@ -53,46 +71,67 @@
 			},
 			transInfo() {
 				this.sendWifi();
-				/* this.$refs.uForm.validate(valid => {
-					if (valid) {
-						console.log('验证通过');
-						this.sendWifi();
-					} else {
-						console.log('验证失败');
-					}
-				}); */
 			},
 			getWifiInfo() {
 				var that = this;
-				uni.startWifi({
-				    success(res) {
-				        console.log(res.errMsg, 'wifi初始化成功')
-						that.wifiIsInit = true;
-						uni.getConnectedWifi({
-							success(res){
-								console.log("getConnectedWifi ok:", JSON.stringify(res))
-								if ('getConnectedWifi:ok' === res.errMsg) {
-									that.data.ssid = res.wifi.SSID
-								} else {
-									uni.showToast({
-										title: '请连接路由器',
-										duration: 2000,
-										icon: 'none'
-									})
-								}
+				uni.authorize({
+					scope: 'scope.userLocation',
+					success() {
+						uni.getLocation({
+							type: 'wgs84',
+							success: function (res) {
+								console.log('当前位置的经度：' + res.longitude);
+								console.log('当前位置的纬度：' + res.latitude);
+								uni.startWifi({
+									success(res) {
+										console.log(res.errMsg, 'wifi初始化成功')
+										that.wifiIsInit = true;
+										uni.getConnectedWifi({
+											success(res){
+												console.log("getConnectedWifi ok:", JSON.stringify(res))
+												if ('getConnectedWifi:ok' === res.errMsg) {
+													that.data.ssid = res.wifi.SSID;
+												} else {
+													uni.showToast({
+														title: '请连接路由器',
+														duration: 2000,
+														icon: 'none'
+													})
+												}
+											},
+											fail(res){
+												console.log('getConnectedWifi fail');
+												uni.showToast({
+													title: '请打开GPS定位',
+													duration: 4000,
+													icon: 'none'
+												})
+											}
+										})
+										console.log(that.list);
+									},
+									fail: function (res) {
+										wx.showToast({
+											title: '请连接路由器!',
+											duration: 2000,
+											icon: 'none'
+										})
+										that.wifiIsInit = false;
+									}
+								})
+							},
+							fail(r){
+								console.log('------ location ---err--' +r);
+								
 							}
-						})
-						console.log(that.list);
-				    },
-				    fail: function (res) {
-				        wx.showToast({
-				            title: '请连接路由器!',
-				            duration: 2000,
-				            icon: 'none'
-				        })
-						that.wifiIsInit = false;
-				    }
-				})
+						});
+					},
+					fail(){
+						console.log('------ refuse -----');
+					}
+				});
+								
+				
 			},
 			sendWifi(){
 				        if (this.data.isFirst) {
@@ -104,12 +143,12 @@
 				
 				        const password = this.data.password;
 				        const ssid = this.data.ssid;
-				        const port = this.data.port;
-				
+				        const deviceOwner = this.$store.state.userInfo.username;
 				        let message = JSON.stringify({
-				            port,
-				            password,
-				            ssid
+				            'add_code':this.addCode,
+				            'password':password,
+				            'ssid':ssid,
+							'device_owner':deviceOwner
 				        })
 				
 				        this.data.udp.send({
@@ -117,7 +156,9 @@
 				            port: 10000,
 				            message
 				        });
-						this.show = true;
+						this.lotusLoadingData.isShow = true;
+						this.startSearch();
+
 				        this.data.udp.onMessage((res) => {
 				            //字符串转换，很重要
 				            let unit8Arr = new Uint8Array(res.message);
@@ -152,6 +193,49 @@
 				                    break;
 				            }
 				        })
+			},
+			addDeviceCode(){
+				this.$api.device.getDeviceAddCode().then(res =>{
+					this.addCode = res;
+					wx.showToast({
+						title: this.addCode,
+						duration: 2000,
+						icon: 'none'
+					})
+				})
+			},
+			checkDeviceCreate(){
+				var that = this;
+				this.$api.device.checkDeviceCreate({
+					addCode:this.addCode
+				}).then(resp=>{
+					console.log('then');
+					console.log(resp);
+					if(resp == 1){
+						this.lotusLoadingData.isShow = false;
+						clearInterval(this.timeoutId);
+						passJs.$emit('reGetDevice','prepare refresh device added');
+						
+						this.$refs.uToast.show({
+							title: '创建成功',
+							type: 'success',
+							isTab: true,
+							duration: 3000,
+							url: '/pages/device/device'
+						})
+				
+					}else{
+						console.log('next loop');
+					}
+				}).catch(err=>{
+					console.log('err');
+				})
+			},
+			startSearch(){
+				var that = this;
+				this.timeoutId = setInterval(function(){
+					that.checkDeviceCreate()
+				}, 10000);
 			}
 			        
 		}
@@ -159,22 +243,5 @@
 </script>
 
 <style lang="scss" scoped>
-.u-progress-content {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-	
-	.u-progress-dot {
-		width: 16rpx;
-		height: 16rpx;
-		border-radius: 50%;
-		background-color: #fb9126;
-	}
-	
-	.u-progress-info {
-		font-size: 28rpx;
-		padding-left: 16rpx;
-		letter-spacing: 2rpx
-	}
+
 </style>
