@@ -24,3 +24,7 @@ export function checkDeviceCreate(params){
 export function sendDeviceOrder(params){
 	return vm.$u.post('/wechat/api/device/operateDevice', params)
 }
+
+export function queryDeviceLog(params){
+	return vm.$u.get('/wechat/api/log', params)
+}

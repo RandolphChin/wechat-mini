@@ -75,7 +75,7 @@
 			"name": "userInfo",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "Me",
+                "navigationBarTitleText": "日志",
                 "enablePullDownRefresh": true
             }
             
