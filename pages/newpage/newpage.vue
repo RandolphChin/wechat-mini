@@ -207,11 +207,20 @@ export default {
 			orderInfo.device_id=this.device.deviceId;
 			orderInfo.device_order=order;
 			console.log(orderInfo);
-			this.openLoading = true;
+			if(order ==1){
+				this.openLoading = true;
+			}else{
+				this.closeLoading = true;
+			}
+				
 			this.$api.device.sendDeviceOrder(
 				orderInfo
 			).then(res => {
-				this.openLoading = false;
+				if(order ==1){
+					this.openLoading = false;
+				}else{
+					this.closeLoading = false;
+				}
 				uni.showToast({
 					icon: "none",
 					title: '发送成功',

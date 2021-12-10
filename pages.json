@@ -12,7 +12,7 @@
 			"name":"device",
 			"style" :                                                                                    
 			{
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "设备列表",
 				"enablePullDownRefresh": true
 			}
 			
@@ -44,7 +44,7 @@
 				"title": "设备操作"
 			},
 			"style": {
-				"navigationBarTitleText": "操作",
+				"navigationBarTitleText": "设备操作",
 				"enablePullDownRefresh": false
 			}
 		}, 
@@ -85,7 +85,7 @@
 			"name":"wifi",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "",
+                "navigationBarTitleText": "设备添加",
                 "enablePullDownRefresh": false
             }
             
@@ -125,7 +125,7 @@
 					"pagePath":"pages/me/userInfo/userInfo",
 					"iconPath": "static/image/setting_nor.png",
 					"selectedIconPath": "static/image/setting_pressed.png",
-					"text":"设置"
+					"text":"关于"
 				}
 				]
 	}
