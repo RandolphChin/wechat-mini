@@ -28,7 +28,9 @@
 </template>
 
 <script>
-import passJs from '@/common/pass.js';		
+import passJs from '@/common/pass.js';
+import ws from '@/common/websocket/ws.js'
+
 	export default {
 		data() {
 			return {
@@ -40,7 +42,8 @@ import passJs from '@/common/pass.js';
 				custDeviceName:'',
 				type: 'text',
 				loaded: false,
-				chosedIndex: 0
+				chosedIndex: 0,
+				message:'',
 			}
 		},
 		onLoad() {
@@ -64,7 +67,11 @@ import passJs from '@/common/pass.js';
 				console.log(msg);
 				that.refresh();
 			})
+			this.connect();
 		},
+		destroyed() {
+		    this.disconnect()
+		  },
 		methods: {
 			getDevice(){
 				let that = this;
@@ -166,6 +173,23 @@ import passJs from '@/common/pass.js';
 				this.size = 10;
 				this.devices=[];
 				this.getDevice();
+			},
+			connect() {
+				ws.connect();
+				ws.subscribe("/topic/device",  k => {
+					const messageResponse = JSON.parse(k.body)
+					console.log(k.body);
+					this.devices.filter(v => {
+					              if (v.deviceId === messageResponse.device_id) {
+										v.status = (messageResponse.device_status == 1 ? true : false)
+					              }
+					              return v
+					            })
+				})
+			},
+			disconnect() {
+				console.log('enter disconnet');
+				ws.disconnect();
 			}
 		}
 	}

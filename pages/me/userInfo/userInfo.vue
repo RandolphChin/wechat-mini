@@ -30,7 +30,7 @@
 				</view>
 				<u-line class="u-m-t-20" color="#e8e8e8" />
 			<view v-for="(item, index) in logs" :key="item.id" :index="index">
-					<view class="u-flex u-row-between u-m-35">
+					<view class="u-flex u-row-between u-m-35 u-font-sm">
 						<view>
 							{{item.deviceName}}
 						</view>
@@ -59,25 +59,16 @@
 </template>
 
 <script>
+import ws from '@/common/websocket/ws.js'	
 	export default {
 		data() {
 		        return {
-					emulator_Height: 0, //屏幕高度
 					page:0,
 					size:15,
 					logs:[],
 					loadMoreStatus: 'loadmore', // 加载前值为loadmore，加载中为loading，没有数据为nomore
 		        }
 		    },
-			onShow() {
-				// 获取屏幕高度
-				let self = this;
-				uni.getSystemInfo({
-					success: function(res) {
-						self.emulator_Height = (res.screenHeight * (750 / res.windowWidth)) //将px 转换rpx
-					}
-				});
-			},
 			onReachBottom() {
 				//上拉动作
 				this.getLogs();
@@ -87,7 +78,10 @@
 				this.refresh();
 			},
 			onLoad() {
-				this.getLogs();
+				// this.getLogs();
+			},
+			mounted(){
+				this.connect();
 			},
 			onShow() {
 				this.refresh();
@@ -134,14 +128,13 @@
 						sort: 'createTime,desc'
 					}
 				).then(res => {
+					that.page = that.page + 1;
 					if(res.content.length > 0){
-						that.page = that.page + 1;
 						that.loadMoreStatus = 'loadmore'
 						that.logs = that.logs.concat(res.content)
 					}else{
 						that.loadMoreStatus = 'nomore'
 					}
-					
 				})
 			},
 			refresh(){
@@ -149,6 +142,23 @@
 				this.size = 15;
 				this.logs=[];
 				this.getLogs();
+			},
+			connect() {
+				ws.connect();
+				ws.subscribe("/topic/log",  k => {
+					const messageResponse = JSON.parse(k.body)
+					console.log(k.body);
+					this.logs.filter(v => {
+					              if (v.msgId === messageResponse.timestamp) {
+										v.status =true
+					              }
+					              return v
+					            })
+				})
+			},
+			disconnect() {
+				console.log('enter disconnet');
+				ws.disconnect();
 			}
 		}
 	}
