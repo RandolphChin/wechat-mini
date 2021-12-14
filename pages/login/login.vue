@@ -74,7 +74,6 @@
 						//存储用户信息
 						this.$u.vuex('token', res.token)
 						this.$u.vuex('userInfo', res.user)
-						console.log('login resp= '+ res);
 						//uni.setStorageSync('userInfo', res.user);
 						//uni.setStorageSync('token', res.token);
 						
@@ -88,7 +87,6 @@
 				}
 			},
 			h5Login(){
-				console.log('yee haw')
 			}
 		},
 		onLoad: function(options) {
@@ -101,7 +99,6 @@
 			uni.login({
 				success: function(res) {
 					if (res.code) {
-						console.log(res.code);
 						that.code = res.code
 					}
 				}

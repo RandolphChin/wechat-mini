@@ -62,13 +62,13 @@
 		methods: {
 			click(index, index1) {
 				if(index1 == 0) {
-					console.log('setting');
+					
 					this.$emit('naviOperate',index);
 				}else if(index1 == 1) {
-					console.log('update');
+					
 					this.$emit('devUpdate',index);
 				}else {
-					console.log('del');
+					
 					this.$emit("delDev",index);
 				}			
 			},

@@ -80,15 +80,11 @@ import passJs from '@/common/pass.js';
 						uni.getLocation({
 							type: 'wgs84',
 							success: function (res) {
-								console.log('当前位置的经度：' + res.longitude);
-								console.log('当前位置的纬度：' + res.latitude);
 								uni.startWifi({
 									success(res) {
-										console.log(res.errMsg, 'wifi初始化成功')
 										that.wifiIsInit = true;
 										uni.getConnectedWifi({
 											success(res){
-												console.log("getConnectedWifi ok:", JSON.stringify(res))
 												if ('getConnectedWifi:ok' === res.errMsg) {
 													that.data.ssid = res.wifi.SSID;
 												} else {
@@ -100,7 +96,6 @@ import passJs from '@/common/pass.js';
 												}
 											},
 											fail(res){
-												console.log('getConnectedWifi fail');
 												uni.showToast({
 													title: '请打开GPS定位',
 													duration: 4000,
@@ -143,7 +138,7 @@ import passJs from '@/common/pass.js';
 				
 				        const password = this.data.password;
 				        const ssid = this.data.ssid;
-				        const deviceOwner = this.$store.state.userInfo.username;
+				        const deviceOwner = this.$store.state.userInfo.user.openid;
 				        let message = JSON.stringify({
 				            'add_code':this.addCode,
 				            'password':password,
@@ -209,8 +204,6 @@ import passJs from '@/common/pass.js';
 				this.$api.device.checkDeviceCreate({
 					addCode:this.addCode
 				}).then(resp=>{
-					console.log('then');
-					console.log(resp);
 					if(resp == 1){
 						this.lotusLoadingData.isShow = false;
 						clearInterval(this.timeoutId);

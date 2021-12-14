@@ -87,38 +87,6 @@ import ws from '@/common/websocket/ws.js'
 				this.refresh();
 			},
 		methods: {
-			upper: function(e) {
-			            console.log(e)
-			},
-			lower: function(e) {
-				console.log(e)
-			},
-			scroll: function(e) {
-				console.log(e)
-				this.old.scrollTop = e.detail.scrollTop
-			},
-			logout() {
-				uni.showModal({
-					title: '提示',
-					content: '确认退出登陆？',
-					success: function(res) {
-						if (res.confirm) {
-							uni.removeStorage({
-								key: 'token',
-								success(res) {
-									uni.redirectTo({
-										url: '/pages/login/login'
-									})
-								}
-							})
-						} else if (res.cancel) {
-							console.log('用户点击取消');
-						}
-					}
-				});
-
-
-			},
 			getLogs(){
 				var that = this;
 				this.$api.device.queryDeviceLog(
@@ -147,7 +115,6 @@ import ws from '@/common/websocket/ws.js'
 				ws.connect();
 				ws.subscribe("/topic/log",  k => {
 					const messageResponse = JSON.parse(k.body)
-					console.log(k.body);
 					this.logs.filter(v => {
 					              if (v.msgId === messageResponse.timestamp) {
 										v.status =true
@@ -157,7 +124,6 @@ import ws from '@/common/websocket/ws.js'
 				})
 			},
 			disconnect() {
-				console.log('enter disconnet');
 				ws.disconnect();
 			}
 		}

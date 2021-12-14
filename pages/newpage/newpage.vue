@@ -85,7 +85,6 @@ export default {
 			if(e) {
 				this[this.type] = e.value; 
 				//选择的值
-				console.log('value => '+ e.value);
 				this.titleOpen = e.value;
 				this.valueOpen = e.value;
 			}
@@ -95,7 +94,6 @@ export default {
 			if(e) {
 				this[this.type] = e.value; 
 				//选择的值
-				console.log('value => '+ e.value);
 				this.titleClose = e.value;
 				this.valueClose = e.value;
 			}
@@ -114,7 +112,7 @@ export default {
 			this.addTab = true;
 		},
 		addSchedule(){
-			let groupNameOpen = this.$store.state.userInfo.username;
+			let groupNameOpen = this.$store.state.userInfo.user.openid;
 			let jobClassOpen = 'com.gitee.coadmin.modules.quartz.task.DeviceOpenTask';
 			let paramOpen ={'deviceId':this.device.deviceId+'','deviceOrder': '1'}
 			let cronArrOpen =['*','*','?','*'];
@@ -124,7 +122,7 @@ export default {
 			cronArrOpen.unshift('0');
 			let cronExpressionOpen =cronArrOpen.join(' '); //  0 15 08 * * ? *
 			
-			let groupNameClose = this.$store.state.userInfo.username;
+			let groupNameClose = this.$store.state.userInfo.user.openid;
 			let jobClassClose = 'com.gitee.coadmin.modules.quartz.task.DeviceCloseTask';
 			let paramClose ={'deviceId':this.device.deviceId+'','deviceOrder': '0'}
 			let cronArrClose =['*','*','?','*'];
@@ -149,7 +147,6 @@ export default {
 			this.$api.quartz.create(
 				cronInfo
 			).then(res => {
-				console.log('add success');
 				let newJob={};
 				newJob.deviceId =this.device.deviceId;
 				newJob.status = true;
@@ -186,7 +183,6 @@ export default {
 			this.addTab =false
 		},
 		delOperate(index){
-			console.log(this.quartzs[index]);
 			uni.showModal({
 			          title: '提示',
 			          content: '您确定删除吗？',
@@ -206,7 +202,6 @@ export default {
 			let orderInfo={};
 			orderInfo.device_id=this.device.deviceId;
 			orderInfo.device_order=order;
-			console.log(orderInfo);
 			if(order ==1){
 				this.openLoading = true;
 			}else{

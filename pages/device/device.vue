@@ -55,16 +55,13 @@ import ws from '@/common/websocket/ws.js'
 		},
 		// 下拉动作
 		onPullDownRefresh (){
-			console.log('invoke onPullDownRefresh ');
+			
 			this.refresh();
-		},
-		onUnload() {
-			console.log('device unload');
 		},
 		mounted() {
 			var that = this;
 			passJs.$on('reGetDevice',function(msg){
-				console.log(msg);
+			
 				that.refresh();
 			})
 			this.connect();
@@ -117,7 +114,7 @@ import ws from '@/common/websocket/ws.js'
 				this.popShow = true;
 				this.custDeviceName =this.devices[index].deviceName;
 				this.chosedIndex = index;
-				console.log(this.chosedIndex);
+				
 			},
 			cancelPop(){
 				this.popShow = false;
@@ -160,7 +157,7 @@ import ws from '@/common/websocket/ws.js'
 				})
 			},
 			contentClick(index){
-				console.log(this.devices[index]);
+				
 				this.$Router.push({
 					name: 'newpage',
 					params: {
@@ -178,7 +175,7 @@ import ws from '@/common/websocket/ws.js'
 				ws.connect();
 				ws.subscribe("/topic/device",  k => {
 					const messageResponse = JSON.parse(k.body)
-					console.log(k.body);
+				
 					this.devices.filter(v => {
 					              if (v.deviceId === messageResponse.device_id) {
 										v.status = (messageResponse.device_status == 1 ? true : false)
@@ -188,7 +185,6 @@ import ws from '@/common/websocket/ws.js'
 				})
 			},
 			disconnect() {
-				console.log('enter disconnet');
 				ws.disconnect();
 			}
 		}
