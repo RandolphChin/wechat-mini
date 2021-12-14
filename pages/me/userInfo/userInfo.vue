@@ -30,23 +30,23 @@
 				</view>
 				<u-line class="u-m-t-20" color="#e8e8e8" />
 			<view v-for="(item, index) in logs" :key="item.id" :index="index">
-					<view class="u-flex u-row-between u-m-35 u-font-sm">
-						<view>
-							{{item.deviceName}}
-						</view>
-						<view class="u-m-l-25">
-							<text v-if="item.status == 1">成功</text>
-							<text v-else-if="item.status == 0">失败</text>
-							<text v-else>处理中</text>
-						</view>
-						<view class="u-m-l-25">
-							{{item.createTime}}
-						</view>
-						<view class="u-m-l-25">
-							<text v-if="item.deviceOrder">开机</text>
-							<text v-else>关机</text>
-						</view>
+				<view class="u-flex u-row-between u-m-35 u-font-sm">
+					<view>
+						{{item.deviceName}}
 					</view>
+					<view class="u-m-l-25">
+						<text v-if="item.status == 1">成功</text>
+						<text v-else-if="item.status == 0">失败</text>
+						<text v-else>处理中</text>
+					</view>
+					<view class="u-m-l-25">
+						{{item.createTime}}
+					</view>
+					<view class="u-m-l-25">
+						<text v-if="item.deviceOrder">开</text>
+						<text v-else>关</text>
+					</view>
+				</view>
 			</view>
 							
 			<u-loadmore :status="loadMoreStatus" />
@@ -66,7 +66,7 @@ import ws from '@/common/websocket/ws.js'
 					page:0,
 					size:15,
 					logs:[],
-					loadMoreStatus: 'loadmore', // 加载前值为loadmore，加载中为loading，没有数据为nomore
+					loadMoreStatus: 'loadmore' // 加载前值为loadmore，加载中为loading，没有数据为nomore
 		        }
 		    },
 			onReachBottom() {
