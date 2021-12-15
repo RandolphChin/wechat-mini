@@ -67,6 +67,7 @@ import ws from '@/common/websocket/ws.js'
 			this.connect();
 		},
 		destroyed() {
+			console.log('device disconnect');
 		    this.disconnect()
 		  },
 		methods: {
@@ -78,7 +79,6 @@ import ws from '@/common/websocket/ws.js'
 					sort: 'createTime,desc'
 				}).then(res => {
 					// 此处不需要校验code为200 请求拦截器中已判断
-					that.$u.toast('获取数据成功');
 					that.page = that.page + 1
 					if(res.content.length > 0){
 						that.status = 'loadmore'
@@ -175,7 +175,6 @@ import ws from '@/common/websocket/ws.js'
 				ws.connect();
 				ws.subscribe("/topic/device",  k => {
 					const messageResponse = JSON.parse(k.body)
-				
 					this.devices.filter(v => {
 					              if (v.deviceId === messageResponse.device_id) {
 										v.status = (messageResponse.device_status == 1 ? true : false)

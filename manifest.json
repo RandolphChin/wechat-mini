@@ -1,5 +1,5 @@
 {
-    "name" : "海葵星",
+    "name" : "海葵设备智能操控",
     "appid" : "__UNI__3A3C3C9",
     "description" : "微信配网",
     "versionName" : "1.0.0",
@@ -79,7 +79,7 @@
     "quickapp" : {},
     /* 小程序特有相关 */
     "mp-weixin" : {
-        "appid" : "wx47b65fb0975cc63c",
+        "appid" : "wx2056a5cb7d4bfb81",
         "setting" : {
             "urlCheck" : false,
             "postcss" : true,

@@ -1,14 +1,15 @@
 const CONFIG = {
 	// 开发环境配置
 	development: {
-		// baseUrl: 'https://8553130f-d188-40fd-8274-56ae596e446d.bspapp.com',
-		baseUrl: 'http://127.0.0.1:8100',
-		websocket: 'ws://127.0.0.1:8100/webSocket/wechat'
+		//baseUrl: 'http://127.0.0.1:8100',
+		baseUrl: 'https://hkwis.com/wechat',
+		//websocket: 'ws://127.0.0.1:8100/webSocket/wechat'
+		websocket: 'wss://hkwis.com/wechat/webSocket/wechat'
 	},
 	// 生产环境配置
 	production: {
-		baseUrl: 'https://8553130f-d188-40fd-8274-56ae596e446d.bspapp.com',
-		websocket: '/webSocket/wechat'
+		baseUrl: 'https://hkwis.com/wechat',
+		websocket: 'wss://hkwis.com/wechat/webSocket/wechat'
 	}
 }
 export default CONFIG[process.env.NODE_ENV];

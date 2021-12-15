@@ -9,7 +9,7 @@
 		</view>
 		<view class="u-p-20">
 			<u-form :model="form" ref="uForm" :error-type="errorType" >
-					<u-form-item label="WIFI" ><u-input  v-model="data.ssid" placeholder="请填写 wifi 名称" /></u-form-item>
+					<u-form-item label="WIFI" ><u-input  v-model="data.ssid" placeholder="请填写 wifi 名称" @click="getWifiAgain"/></u-form-item>
 					<u-form-item label="密码" ><u-input placeholder="请填写 wifi 密码" v-model="data.password" /></u-form-item>
 					<u-button type="success"  @click="transInfo()">连接</u-button>
 			</u-form>
@@ -117,7 +117,11 @@ import passJs from '@/common/pass.js';
 							},
 							fail(r){
 								console.log('------ location ---err--' +r);
-								
+								uni.showToast({
+									title: '请打开GPS定位',
+									duration: 4000,
+									icon: 'none'
+								})
 							}
 						});
 					},
@@ -228,9 +232,8 @@ import passJs from '@/common/pass.js';
 				var that = this;
 				this.timeoutId = setInterval(function(){
 					that.checkDeviceCreate()
-				}, 10000);
+				}, 3000);
 			}
-			        
 		}
 	}
 </script>

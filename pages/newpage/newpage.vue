@@ -57,6 +57,8 @@
 </template>
 
 <script>
+import ws from '@/common/websocket/ws.js';
+	
 export default {
 	data() {
 		return {
@@ -78,7 +80,16 @@ export default {
 	onLoad() {
 		this.device = this.$Route.query.device;
 		this.initQuartz();
+		console.log('onload');
 	},
+	destroyed() {
+		console.log('destroy');
+	    this.disconnect()
+	  },
+	  mounted() {
+		  console.log('monunt');
+		this.connect();
+	  },
 	methods: {
 		onSelectedOpen(e) {//选择
 			this.showPickerOpen = false;
@@ -223,6 +234,19 @@ export default {
 					duration: 2000
 				});
 			})
+		},
+		connect() {
+			ws.connect();
+			ws.subscribe("/topic/deviceOperate",  k => {
+				const messageResponse = JSON.parse(k.body)
+				console.log('-----');
+				if(this.device.deviceId == messageResponse.device_id){
+					this.device.status=messageResponse.device_status 
+				}
+			})
+		},
+		disconnect() {
+			ws.disconnect();
 		}
 	}
 }

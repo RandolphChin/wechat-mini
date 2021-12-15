@@ -36,7 +36,6 @@ class Ws {
 		if (this.client && this.client.connected) {
 			return
 		}
-
 		let ws = new UniWebSocket(this.url)
 		this.client = Stomp.over(ws)
 		// 控制是否打印debug信息
