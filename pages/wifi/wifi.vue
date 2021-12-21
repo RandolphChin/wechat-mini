@@ -1,17 +1,18 @@
 <template>
 	<view>
 		<view class="u-m-l-25">
-			<view>流程</view>
+			<view>配网流程</view>
 			<view class="u-m-t-10">1）打开GPS定位。</view>
 			<view>2）连接到家庭路由器2.4G频段网络，打开小程序。</view>
-			<view>3）切换 Wifi加入设备 Wifi 热点。</view>
-			<view>4）输入热点 Wifi密码,点击确定。</view>
+			<view>3）点击"添加设备",选择 SoftAP 方式。</view>
+			<view>4）切换 Wifi加入设备 Wifi 热点(不要关闭小程序)。</view>
+			<view>4）输入家庭路由器的 Wifi 名称和 Wifi密码,点击连接设备。</view>
 		</view>
 		<view class="u-p-20">
 			<u-form :model="form" ref="uForm" :error-type="errorType" >
 					<u-form-item label="WIFI" ><u-input  v-model="data.ssid" placeholder="请填写 wifi 名称" @click="getWifiAgain"/></u-form-item>
 					<u-form-item label="密码" ><u-input placeholder="请填写 wifi 密码" v-model="data.password" /></u-form-item>
-					<u-button type="success"  @click="transInfo()">连接</u-button>
+					<u-button type="success"  @click="transInfo()">连接设备</u-button>
 			</u-form>
 			<cl-loading :lotusLoadingData="lotusLoadingData"></cl-loading>
 		</view>
@@ -196,11 +197,6 @@ import passJs from '@/common/pass.js';
 			addDeviceCode(){
 				this.$api.device.getDeviceAddCode().then(res =>{
 					this.addCode = res;
-					wx.showToast({
-						title: this.addCode,
-						duration: 2000,
-						icon: 'none'
-					})
 				})
 			},
 			checkDeviceCreate(){

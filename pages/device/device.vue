@@ -1,7 +1,10 @@
 <template>
 	<view>
 		<view class="u-flex u-row-right u-p-r-10">
-			<u-button plain type="info" @click="preAdd()" size="mini">添加设备</u-button>	
+			<u-button plain type="info" @click="connChose" size="mini">添加设备</u-button>	
+		</view>
+		<view>
+			<u-select :default-value="matcherDefault" v-model="matcherShow" mode="single-column" :list="matcherList" @confirm="matcherConfirm" title="配网方式"></u-select>
 		</view>
 		<view>
 			<cl-device :devices="devices" @delDev="delDev" @devUpdate="devUpdate" @naviOperate="naviOperate" @openDev="openDev" @contentClick="contentClick"></cl-device>
@@ -44,6 +47,18 @@ import ws from '@/common/websocket/ws.js'
 				loaded: false,
 				chosedIndex: 0,
 				message:'',
+				matcherShow: false,
+				matcherList: [
+					{
+						value: '0',
+						label: 'SoftAP'
+					},
+					{
+						value: '1',
+						label: '4G'
+					}
+				],
+				matcherDefault:[0]
 			}
 		},
 		onLoad() {
@@ -88,9 +103,14 @@ import ws from '@/common/websocket/ws.js'
 					}
 				});
 			},
-			preAdd() {
+			preWifiAdd() {
 				this.$Router.push({
 					name: 'wifi'
+				});
+			},
+			pre4gAdd() {
+				this.$Router.push({
+					name: '4g'
 				});
 			},
 			delDev(index){
@@ -105,6 +125,7 @@ import ws from '@/common/websocket/ws.js'
 						ids
 					 ).then(res => {
 						this.devices.splice(index, 1);
+						this.refresh();
 					 })
 					}
 				  }
@@ -185,6 +206,19 @@ import ws from '@/common/websocket/ws.js'
 			},
 			disconnect() {
 				ws.disconnect();
+			},
+			connChose(){
+				this.matcherShow = true;
+			},
+			matcherConfirm(e){
+				console.log(e);
+				this.matcherShow = false;
+				this.matcherDefault[0] = e[0].value
+				if(e[0].value == '0'){
+					this.preWifiAdd();
+				}else if(e[0].value == '1'){
+					this.pre4gAdd();
+				}
 			}
 		}
 	}

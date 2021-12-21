@@ -68,6 +68,16 @@
             }
             
         }
+        ,{
+            "path" : "pages/wifi/fourG",
+			"name":"4g",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "设备添加",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
