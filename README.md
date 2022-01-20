@@ -1,12 +1,12 @@
 # 介绍
 微信脚手架项目，基于 [惊悚的毛毛虫](https://gitee.com/ChenMuShan/uniapp-template)的uniapp-template项目
-
+微信配网参考 [liwei16611](https://blog.csdn.net/liwei16611/article/details/81133191)
 ### 添加功能
 1. 微信登录(微信登录后，后台返回token和用户信息给微信客户端)
 2. 访问权限页面A时，未登录则跳转至登录页面，登录成功后自动跳转至A页面
 3. 页面到底部之后加载数据(onReachBottom)，页面下拉到底后动态加载下一页滚动翻页(示例userInfo.vue)
+4. 微信 smartConfig 配网、softAP 配网
 
-微信小程序对应后端前往这里 [wechat-admin](https://github.com/RandolphChin/wechat-admin)https://github.com/RandolphChin/wechat-admin.git
 ## 主架构 uniapp
 
 ###	介绍 
