@@ -51,10 +51,14 @@ import ws from '@/common/websocket/ws.js'
 				matcherList: [
 					{
 						value: '0',
-						label: 'SoftAP'
+						label: 'SmartConfig'
 					},
 					{
 						value: '1',
+						label: 'SoftAP'
+					},
+					{
+						value: '2',
 						label: '4G'
 					}
 				],
@@ -101,6 +105,11 @@ import ws from '@/common/websocket/ws.js'
 					}else{
 						that.status = 'nomore'
 					}
+				});
+			},
+			preSmartAdd(){
+				this.$Router.push({
+					name: 'smart'
 				});
 			},
 			preWifiAdd() {
@@ -215,8 +224,10 @@ import ws from '@/common/websocket/ws.js'
 				this.matcherShow = false;
 				this.matcherDefault[0] = e[0].value
 				if(e[0].value == '0'){
-					this.preWifiAdd();
+					this.preSmartAdd();
 				}else if(e[0].value == '1'){
+					this.preWifiAdd();
+				}else if(e[0].value == '2'){
 					this.pre4gAdd();
 				}
 			}

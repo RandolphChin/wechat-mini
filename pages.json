@@ -78,6 +78,16 @@
             }
             
         }
+        ,{
+            "path" : "pages/wifi/smart",
+			"name":"smart",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "设备添加",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
