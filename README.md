@@ -5,7 +5,8 @@
 1. 微信登录(微信登录后，后台返回token和用户信息给微信客户端)
 2. 访问权限页面A时，未登录则跳转至登录页面，登录成功后自动跳转至A页面
 3. 页面到底部之后加载数据(onReachBottom)，页面下拉到底后动态加载下一页滚动翻页(示例userInfo.vue)
-4. 微信 smartConfig 配网、softAP 配网
+4. 添加 Websocket 实时显示设备状态(StompJs)
+5. 微信 smartConfig 配网、softAP 配网
 
 ## 主架构 uniapp
 
